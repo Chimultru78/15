@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentina | Mis XV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════════
+       RESET Y BASE
+       Quita márgenes por defecto del navegador
+    ═══════════════════════════════════════════════ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; } /* scroll suave al hacer clic en el menú */
+
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: #3a0020;
+      background: #fff5f8;
+    }
+
+    /* ═══════════════════════════════════════════════
+       MENÚ DE NAVEGACIÓN FIJO
+       position: fixed → siempre visible aunque hagas scroll
+    ═══════════════════════════════════════════════ */
+    nav {
+      position: fixed;        /* se queda pegado arriba */
+      top: 0; left: 0; right: 0;
+      z-index: 100;           /* encima de todo */
+      background: rgba(255, 240, 245, 0.92);
+      backdrop-filter: blur(6px); /* fondo borroso (estilo vidrio) */
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 0.8rem 1rem;
+      border-bottom: 0.5px solid #f48fb1;
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #c2185b;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #880e4f; }
+
+
+    /* ═══════════════════════════════════════════════
+       SECCIONES — estructura general
+       Cada sección ocupa al menos toda la pantalla
+       padding-top: 80px para que el menú fijo no tape
+    ═══════════════════════════════════════════════ */
+    section {
+      min-height: 100vh;      /* 100% de la altura de la pantalla */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 1.5rem 3rem;
+      text-align: center;
+    }
+
+    /* Secciones alternas con fondo diferente */
+    section:nth-child(even) { background: #fce4ec; }
+    section:nth-child(odd)  { background: #fff5f8; }
+
+    /* ── Títulos de sección ── */
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #f48fb1;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem); /* tamaño fluido según pantalla */
+      color: #880e4f;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .divider {
+      width: 60px; height: 1px;
+      background: #f48fb1;
+      margin: 1rem auto 2rem;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       SECCIÓN 1 — PORTADA
+       La imagen de fondo va aquí. Por ahora es un
+       degradado; cámbialo por url("tu-foto.jpg")
+    ═══════════════════════════════════════════════ */
+    #portada {
+      /* CÓMO PONER TU FOTO:
+         background-image: url("foto.jpg");
+         background-size: cover;
+         background-position: center;
+         Y elimina el linear-gradient de abajo      */
+      background-image: linear-gradient(160deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+      position: relative;
+    }
+
+    /* Capa semitransparente (útil cuando pongas foto) */
+    #portada::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255, 240, 245, 0.45);
+    }
+
+    /* El contenido va encima de la capa */
+    .portada-contenido { position: relative; z-index: 1; }
+
+    .crown { font-size: 2.5rem; margin-bottom: 0.5rem; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+    .nombre-portada {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 12vw, 6rem);
+      color: #880e4f;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .subtitulo-portada {
+      font-style: italic;
+      font-size: 1.2rem;
+      color: #ad1457;
+      margin: 0.5rem 0 2rem;
+      font-weight: 300;
+    }
+
+    /* ── Cuenta regresiva ── */
+    .countdown {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .countdown-bloque {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255,255,255,0.6);
+      border: 0.5px solid #f48fb1;
+      border-radius: 12px;
+      padding: 0.8rem 1.2rem;
+      min-width: 70px;
+    }
+    .countdown-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: #880e4f;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .countdown-label {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c2185b;
+      margin-top: 4px;
+    }
+
+    /* flecha para bajar */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      font-size: 1.5rem;
+      color: #f48fb1;
+      animation: bounce 1.5s ease-in-out infinite;
+      cursor: pointer;
+      z-index: 1;
+    }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+
+    /* ═══════════════════════════════════════════════
+       SECCIÓN 2 — ITINERARIO
+    ═══════════════════════════════════════════════ */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 480px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 80px 1px 1fr; /* hora | línea | texto */
+      gap: 0 1rem;
+      align-items: stretch;
+    }
+
+    .timeline-hora {
+      text-align: right;
+      padding: 1rem 0;
+      font-size: 0.85rem;
+      color: #c2185b;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* La línea vertical del timeline */
+    .timeline-linea {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .timeline-punto {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #f48fb1;
+      flex-shrink: 0;
+      margin-top: 1.2rem;
+    }
+    .timeline-trazo {
+      flex: 1;
+      width: 1px;
+      background: #f8bbd0;
+    }
+    /* Oculta el trazo del último item */
+    .timeline-item:last-child .timeline-trazo { display: none; }
+
+    .timeline-texto {
+      padding: 1rem 0 1.5rem;
+    }
+    .timeline-evento {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #880e4f;
+    }
+    .timeline-detalle {
+      font-size: 0.9rem;
+      color: #ad1457;
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       SECCIÓN 3 — MAPA
+    ═══════════════════════════════════════════════ */
+    .mapa-contenedor {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid #f48fb1;
+      box-shadow: 0 8px 30px rgba(244,143,177,0.25);
+    }
+
+    /* El iframe es el mapa de Google Maps embebido */
+    .mapa-contenedor iframe {
+      width: 100%;
+      height: 320px;
+      border: none;
+      display: block;
+    }
+
+    .mapa-info {
+      background: white;
+      padding: 1rem 1.5rem;
+      text-align: left;
+      border-top: 0.5px solid #f8bbd0;
+    }
+    .mapa-nombre { font-weight: 600; font-size: 1rem; color: #880e4f; }
+    .mapa-dir    { font-size: 0.9rem; color: #ad1457; margin-top: 2px; }
+
+    .btn-maps {
+      display: inline-block;
+      margin-top: 0.8rem;
+      padding: 0.5rem 1.4rem;
+      border: 1.5px solid #c2185b;
+      border-radius: 30px;
+      color: #c2185b;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-maps:hover { background: #c2185b; color: white; }
+
+
+    /* ═══════════════════════════════════════════════
+       SECCIÓN 4 — RSVP (Confirmación de asistencia)
+    ═══════════════════════════════════════════════ */
+    .rsvp-form {
+      background: white;
+      border: 0.5px solid #f8bbd0;
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 420px;
+      width: 100%;
+      text-align: left;
+    }
+
+    /* Grupos de campo */
+    .campo-grupo {
+      margin-bottom: 1.2rem;
+    }
+    .campo-grupo label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #c2185b;
+      margin-bottom: 0.4rem;
+    }
+
+    /* Estilos de inputs y select */
+    .campo-grupo input,
+    .campo-grupo select {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid #f8bbd0;
+      border-radius: 8px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: #880e4f;
+      background: #fff5f8;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .campo-grupo input:focus,
+    .campo-grupo select:focus {
+      border-color: #f48fb1;
+    }
+
+    /* Botón de enviar */
+    .btn-enviar {
+      width: 100%;
+      padding: 0.8rem;
+      background: #c2185b;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 0.5rem;
+    }
+    .btn-enviar:hover  { background: #880e4f; }
+    .btn-enviar:active { transform: scale(0.98); }
+
+    /* Mensaje de confirmación (oculto por defecto) */
+    .rsvp-gracias {
+      display: none;           /* se muestra con JS al enviar */
+      text-align: center;
+      padding: 2rem;
+      font-size: 1.2rem;
+      color: #880e4f;
+      font-style: italic;
+    }
+    .rsvp-gracias .check { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
+
+
+    /* ═══════════════════════════════════════════════
+       ANIMACIÓN AL HACER SCROLL
+       Las secciones empiezan invisibles (opacity:0)
+       y aparecen cuando el usuario llega a ellas
+    ═══════════════════════════════════════════════ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       PIE DE PÁGINA
+    ═══════════════════════════════════════════════ */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #880e4f;
+      color: #f8bbd0;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       MENÚ DE NAVEGACIÓN
+       Los href="#id" hacen scroll a cada sección
+  ═══════════════════════════════════════════ -->
+  <nav>
+    <a href="#portada">Inicio</a>
+    <a href="#itinerario">Itinerario</a>
+    <a href="#mapa">Lugar</a>
+    <a href="#rsvp">Confirmar</a>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECCIÓN 1 — PORTADA
+  ═══════════════════════════════════════════ -->
+  <section id="portada">
+    <div class="portada-contenido">
+      <div class="crown">👑</div>
+
+      <p class="section-label">Con todo el amor de nuestra familia</p>
+
+      <!-- CAMBIA "Valentina" por el nombre real -->
+      <h1 class="nombre-portada">Valentina</h1>
+      <p class="subtitulo-portada">celebra sus XV años</p>
+
+      <!-- CUENTA REGRESIVA
+           JavaScript calcula los días/horas/min/seg
+           que faltan para la fecha del evento        -->
+      <div class="countdown">
+        <div class="countdown-bloque">
+          <span class="countdown-num" id="cd-dias">--</span>
+          <span class="countdown-label">Días</span>
+        </div>
+        <div class="countdown-bloque">
+          <span class="countdown-num" id="cd-horas">--</span>
+          <span class="countdown-label">Horas</span>
+        </div>
+        <div class="countdown-bloque">
+          <span class="countdown-num" id="cd-min">--</span>
+          <span class="countdown-label">Min</span>
+        </div>
+        <div class="countdown-bloque">
+          <span class="countdown-num" id="cd-seg">--</span>
+          <span class="countdown-label">Seg</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- flecha para indicar que hay más abajo -->
+    <a class="scroll-hint" href="#itinerario">↓</a>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECCIÓN 2 — ITINERARIO
+       Agrega o quita .timeline-item según necesites
+  ═══════════════════════════════════════════ -->
+  <section id="itinerario">
+    <div class="fade-in">
+      <p class="section-label">El gran día</p>
+      <h2>Itinerario</h2>
+      <div class="divider"></div>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-hora">5:00 PM</div>
+          <div class="timeline-linea">
+            <div class="timeline-punto"></div>
+            <div class="timeline-trazo"></div>
+          </div>
+          <div class="timeline-texto">
+            <div class="timeline-evento">Recepción de invitados</div>
+            <div class="timeline-detalle">Bienvenida y cóctel</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-hora">6:00 PM</div>
+          <div class="timeline-linea">
+            <div class="timeline-punto"></div>
+            <div class="timeline-trazo"></div>
+          </div>
+          <div class="timeline-texto">
+            <div class="timeline-evento">Misa de acción de gracias</div>
+            <div class="timeline-detalle">Parroquia San Francisco</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-hora">8:00 PM</div>
+          <div class="timeline-linea">
+            <div class="timeline-punto"></div>
+            <div class="timeline-trazo"></div>
+          </div>
+          <div class="timeline-texto">
+            <div class="timeline-evento">Vals y presentación</div>
+            <div class="timeline-detalle">Salón Quinta Las Rosas</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-hora">9:00 PM</div>
+          <div class="timeline-linea">
+            <div class="timeline-punto"></div>
+            <div class="timeline-trazo"></div>
+          </div>
+          <div class="timeline-texto">
+            <div class="timeline-evento">Cena y baile</div>
+            <div class="timeline-detalle">¡A celebrar!</div>
+          </div>
+        </div>
+
+      </div><!-- fin .timeline -->
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECCIÓN 3 — MAPA
+       Para obtener el iframe de Google Maps:
+       1. Abre maps.google.com
+       2. Busca el lugar
+       3. Clic en "Compartir" → "Insertar mapa"
+       4. Copia el <iframe> y pégalo aquí abajo
+  ═══════════════════════════════════════════ -->
+  <section id="mapa">
+    <div class="fade-in">
+      <p class="section-label">¿Cómo llegar?</p>
+      <h2>El Lugar</h2>
+      <div class="divider"></div>
+
+      <div class="mapa-contenedor">
+
+        <!-- REEMPLAZA este iframe con el de tu lugar real -->
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3732.0!2d-103.39!3d20.72!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDQzJzEyLjAiTiAxMDPCsDIzJzI0LjAiVw!5e0!3m2!1ses!2smx!4v1"
+          allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+        <div class="mapa-info">
+          <!-- CAMBIA estos datos por los reales -->
+          <div class="mapa-nombre">Salón Quinta Las Rosas</div>
+          <div class="mapa-dir">Av. Patria 1234, Zapopan, Jalisco</div>
+
+          <!-- Este enlace abre Google Maps con la dirección -->
+          <a class="btn-maps"
+             href="https://maps.google.com/?q=Salon+Quinta+Las+Rosas+Zapopan"
+             target="_blank">
+            Abrir en Google Maps →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SECCIÓN 4 — RSVP
+       Al hacer clic en "Confirmar", JavaScript
+       oculta el formulario y muestra el mensaje
+       de agradecimiento.
+       Para guardar los datos de verdad necesitas
+       un backend (Firebase, Formspree, etc.)
+  ═══════════════════════════════════════════ -->
+  <section id="rsvp">
+    <div class="fade-in">
+      <p class="section-label">¡Te esperamos!</p>
+      <h2>Confirma tu asistencia</h2>
+      <div class="divider"></div>
+
+      <div class="rsvp-form">
+
+        <!-- Formulario visible -->
+        <div id="form-contenido">
+
+          <div class="campo-grupo">
+            <label for="nombre">Tu nombre completo</label>
+            <input type="text" id="nombre" placeholder="Ej. Ana García" />
+          </div>
+
+          <div class="campo-grupo">
+            <label for="telefono">WhatsApp (opcional)</label>
+            <input type="tel" id="telefono" placeholder="33 1234 5678" />
+          </div>
+
+          <div class="campo-grupo">
+            <label for="personas">¿Cuántas personas asistirán?</label>
+            <select id="personas">
+              <option value="1">1 persona</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+            </select>
+          </div>
+
+          <div class="campo-grupo">
+            <label for="asiste">¿Podrás asistir?</label>
+            <select id="asiste">
+              <option value="si">Sí, ahí estaré 🎉</option>
+              <option value="no">Lo siento, no podré ir</option>
+            </select>
+          </div>
+
+          <button class="btn-enviar" onclick="enviarRSVP()">
+            Confirmar asistencia
+          </button>
+
+        </div><!-- fin #form-contenido -->
+
+        <!-- Mensaje de gracias (oculto hasta confirmar) -->
+        <div class="rsvp-gracias" id="rsvp-gracias">
+          <span class="check">🌸</span>
+          ¡Gracias por confirmar!<br>
+          <span style="font-size:1rem; color:#c2185b;">Te esperamos con mucho cariño.</span>
+        </div>
+
+      </div><!-- fin .rsvp-form -->
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       PIE DE PÁGINA
+  ═══════════════════════════════════════════ -->
+  <footer>
+    🌸 &nbsp; Valentina · XV Años · 2025 &nbsp; 🌸
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════
+       JAVASCRIPT
+       Tres funciones:
+       1. contarRegresiva() — actualiza el contador
+       2. animarAlScroll()  — fade-in de secciones
+       3. enviarRSVP()      — maneja el formulario
+  ═══════════════════════════════════════════ -->
+  <script>
+
+    /* ── 1. CUENTA REGRESIVA ──────────────────────
+       Cambia la fecha por la del evento real.
+       Formato: año, mes-1 (enero=0), día, hora, min */
+    const FECHA_EVENTO = new Date(2025, 5, 14, 18, 0); // 14 jun 2025, 6pm
+
+    function contarRegresiva() {
+      const ahora     = new Date();
+      const diferencia = FECHA_EVENTO - ahora; // milisegundos que faltan
+
+      if (diferencia <= 0) {
+        // Si ya pasó la fecha, muestra ceros
+        ['cd-dias','cd-horas','cd-min','cd-seg'].forEach(id => {
+          document.getElementById(id).textContent = '00';
+        });
+        return;
+      }
+
+      // Convierte milisegundos a días, horas, minutos, segundos
+      const dias  = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const min   = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+      const seg   = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+      // Actualiza el HTML — padStart(2,'0') pone el cero: 5 → "05"
+      document.getElementById('cd-dias').textContent  = String(dias).padStart(2,'0');
+      document.getElementById('cd-horas').textContent = String(horas).padStart(2,'0');
+      document.getElementById('cd-min').textContent   = String(min).padStart(2,'0');
+      document.getElementById('cd-seg').textContent   = String(seg).padStart(2,'0');
+    }
+
+    contarRegresiva();                    // corre inmediatamente
+    setInterval(contarRegresiva, 1000);   // y luego cada segundo
+
+
+    /* ── 2. ANIMACIÓN AL HACER SCROLL ────────────
+       IntersectionObserver "vigila" los elementos
+       con clase .fade-in y añade .visible cuando
+       el usuario los ve en pantalla               */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {         // si está visible
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 }); // activa cuando el 15% del elemento es visible
+
+    // Aplica el observer a todos los .fade-in
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+
+    /* ── 3. FORMULARIO RSVP ──────────────────────
+       Por ahora solo muestra un mensaje.
+       Para guardar datos de verdad conecta
+       Formspree, Firebase, o un servidor propio.  */
+    function enviarRSVP() {
+      const nombre = document.getElementById('nombre').value.trim();
+
+      if (!nombre) {
+        alert('Por favor escribe tu nombre');
+        return;
+      }
+
+      // Aquí podrías hacer un fetch() a tu servidor:
+      // fetch('https://tu-api.com/rsvp', { method:'POST', body: JSON.stringify({nombre}) })
+
+      // Por ahora solo muestra el mensaje de gracias
+      document.getElementById('form-contenido').style.display = 'none';
+      document.getElementById('rsvp-gracias').style.display   = 'block';
+    }
+
+  </script>
+
+</body>
+</html>
