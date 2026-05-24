@@ -3,712 +3,947 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Valentina | Mis XV</title>
+  <title>Nathaly | Mis XV</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet" />
 
   <style>
-    /* ═══════════════════════════════════════════════
-       RESET Y BASE
-       Quita márgenes por defecto del navegador
-    ═══════════════════════════════════════════════ */
+    @font-face {
+   font-family: 'Bickham';
+   src: url('Bickham.ttf');
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
-    html { scroll-behavior: smooth; } /* scroll suave al hacer clic en el menú */
+    :root {
+      --rosa:        #f4a7c3;
+      --rosa-claro:  #fce8f1;
+      --rosa-medio:  #f48fb1;
+      --rosa-oscuro: #d63f7a;
+      --plata:       #c8d6e0;
+      --plata-claro: #e8f0f5;
+      --plata-brillo:#e2ecf2;
+      --dorado-plata:#b8cdd6;
+      --texto:       #2a1a2a;
+      --texto-suave: #4a2a4a;
+    }
 
     body {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      color: #3a0020;
-      background: #fff5f8;
+      color: var(--texto);
+      background: #fdf0f6;
+      overflow-x: hidden;
     }
 
-    /* ═══════════════════════════════════════════════
-       MENÚ DE NAVEGACIÓN FIJO
-       position: fixed → siempre visible aunque hagas scroll
-    ═══════════════════════════════════════════════ */
-    nav {
-      position: fixed;        /* se queda pegado arriba */
-      top: 0; left: 0; right: 0;
-      z-index: 100;           /* encima de todo */
-      background: rgba(255, 240, 245, 0.92);
-      backdrop-filter: blur(6px); /* fondo borroso (estilo vidrio) */
+    /* ── FONDO ANIMADO CON DESTELLOS ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 20%, rgba(244, 167, 195, 0.411) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 70%, rgba(185, 207, 223, 0.418) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(255, 216, 234, 0.63) 0%, transparent 80%);
+      pointer-events: none;
+      z-index: 0;
+      animation: bgpulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes bgpulse {
+      0%   { opacity: 0.8; }
+      100% { opacity: 1; }
+    }
+
+    /* ── PARTÍCULAS DISCO (destellos flotantes) ── */
+    .disco-particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: sparkle linear infinite;
+      opacity: 0;
+    }
+    @keyframes sparkle {
+      0%   { opacity: 0; transform: translateY(0) rotate(0deg) scale(0.5); }
+      20%  { opacity: 1; }
+      80%  { opacity: 0.6; }
+      100% { opacity: 0; transform: translateY(-120vh) rotate(720deg) scale(1.2); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ── SEPARADORES ── */
+    .ornament-line {
       display: flex;
-      justify-content: center;
-      gap: 2rem;
-      padding: 0.8rem 1rem;
-      border-bottom: 0.5px solid #f48fb1;
+      align-items: center;
+      gap: 10px;
+      margin: 1.2rem auto;
+      max-width: 260px;
+    }
+    .ornament-line::before,
+    .ornament-line::after {
+      content: '';
+      flex: 1;
+      height: 0.5px;
+      background: linear-gradient(90deg, transparent, var(--plata), transparent);
+    }
+    .ornament-line span {
+      color: var(--plata);
+      font-size: 0.55rem;
+      letter-spacing: 4px;
     }
 
-    nav a {
-      text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: #c2185b;
-      transition: color 0.2s;
-    }
-    nav a:hover { color: #880e4f; }
-
-
-    /* ═══════════════════════════════════════════════
-       SECCIONES — estructura general
-       Cada sección ocupa al menos toda la pantalla
-       padding-top: 80px para que el menú fijo no tape
-    ═══════════════════════════════════════════════ */
-    section {
-      min-height: 100vh;      /* 100% de la altura de la pantalla */
+    /* Bola disco SVG inline como separador */
+    .disco-sep {
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 100px 1.5rem 3rem;
+      gap: 14px;
+      margin: 1.4rem auto;
+    }
+    .disco-sep::before,
+    .disco-sep::after {
+      content: '';
+      flex: 1;
+      max-width: 100px;
+      height: 0.5px;
+      background: linear-gradient(90deg, transparent, var(--rosa-medio), transparent);
+    }
+
+    section {
+      padding: 3rem 0;
       text-align: center;
-    }
-
-    /* Secciones alternas con fondo diferente */
-    section:nth-child(even) { background: #fce4ec; }
-    section:nth-child(odd)  { background: #fff5f8; }
-
-    /* ── Títulos de sección ── */
-    .section-label {
-      font-size: 0.7rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #f48fb1;
-      margin-bottom: 0.5rem;
-    }
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 6vw, 3.5rem); /* tamaño fluido según pantalla */
-      color: #880e4f;
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-    }
-    .divider {
-      width: 60px; height: 1px;
-      background: #f48fb1;
-      margin: 1rem auto 2rem;
-    }
-
-
-    /* ═══════════════════════════════════════════════
-       SECCIÓN 1 — PORTADA
-       La imagen de fondo va aquí. Por ahora es un
-       degradado; cámbialo por url("tu-foto.jpg")
-    ═══════════════════════════════════════════════ */
-    #portada {
-      /* CÓMO PONER TU FOTO:
-         background-image: url("foto.jpg");
-         background-size: cover;
-         background-position: center;
-         Y elimina el linear-gradient de abajo      */
-      background-image: linear-gradient(160deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
       position: relative;
     }
-
-    /* Capa semitransparente (útil cuando pongas foto) */
-    #portada::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: rgba(255, 240, 245, 0.45);
+    section + section {
+      border-top: 0.5px solid rgba(200,214,224,0.3);
     }
 
-    /* El contenido va encima de la capa */
-    .portada-contenido { position: relative; z-index: 1; }
+    /* ── TIPOGRAFÍA ── */
+    .label-small {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--plata-brillo);
+      /* Efecto plateado metálico */
+      background: linear-gradient(135deg, #5a7a8a 0%, #8aafc0 40%, #4a6a7a 60%, #7a9aaa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.8rem;
+      display: block;
+      filter: drop-shadow(0 1px 2px rgba(200,214,224,0.4));
+    }
+    .titulo-seccion {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 6vw, 2.2rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--texto);
+      line-height: 1.2;
+      margin: 0.5rem 0 1rem;
+    }
+    .nombre-persona {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      color: var(--texto-suave);
+      line-height: 1.9;
+      font-weight: 400;
+    }
 
-    .crown { font-size: 2.5rem; margin-bottom: 0.5rem; animation: float 3s ease-in-out infinite; }
+    /* ── PORTADA ── */
+    #portada {
+      min-height: 100vh;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 0 3rem;
+    }
+
+    /* Bola disco grande decorativa */
+    .disco-ball-wrap {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 1.8rem;
+      animation: float 4s ease-in-out infinite;
+    }
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
-    .nombre-portada {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 12vw, 6rem);
-      color: #880e4f;
-      font-weight: 700;
-      line-height: 1;
-    }
-    .subtitulo-portada {
-      font-style: italic;
-      font-size: 1.2rem;
-      color: #ad1457;
-      margin: 0.5rem 0 2rem;
-      font-weight: 300;
+    .disco-ball {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%,
+        #ffffff 0%,
+        #e8f4fc 15%,
+        #c8dce8 30%,
+        #f4a7c3 50%,
+        #d63f7a 70%,
+        #8a2050 90%
+      );
+      box-shadow:
+        0 0 20px rgba(244,167,195,0.6),
+        0 0 40px rgba(200,214,224,0.3),
+        inset -8px -8px 20px rgba(0,0,0,0.15),
+        inset 4px 4px 10px rgba(255,255,255,0.4);
+      position: relative;
+      overflow: hidden;
     }
 
-    /* ── Cuenta regresiva ── */
+    /* Mosaico de la bola disco */
+    .disco-ball::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background-image:
+        repeating-linear-gradient(0deg,   rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 8px),
+        repeating-linear-gradient(90deg,  rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 8px);
+    }
+    /* Destellos en la bola */
+    .disco-ball::after {
+      content: '';
+      position: absolute;
+      top: 20%; left: 25%;
+      width: 18px; height: 18px;
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    /* Sombra bajo la bola */
+    .disco-shadow {
+      width: 60px; height: 8px;
+      background: radial-gradient(ellipse, rgba(214,63,122,0.25) 0%, transparent 70%);
+      margin: 6px auto 0;
+      border-radius: 50%;
+    }
+
+    .mis-xv-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #5a7a8a 0%, #8aafc0 40%, #4a6a7a 60%, #7a9aaa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .nombre-xv {
+      font-family: 'Bickham', serif;
+      font-size: clamp(5rem, 22vw, 10rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.3;
+      padding: 0.2em 0.4em 0.2em 0.1em;
+      overflow: visible;
+      display: inline-block;
+      /* Degradado rosa para el nombre */
+      background: linear-gradient(160deg, #6a8090 0%, #a0b0b9 25%, #ececec 45%, #d5e1e9 55%, #9ab8c8 75%, #5a7080 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 8px rgba(160,0,74,0.3));
+    }
+
+    .fecha-portada {
+      margin-top: 1.5rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #5a7a8a, #8aafc0, #5a7a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .scroll-hint {
+      display: block;
+      margin-top: 2.5rem;
+      color: var(--rosa-medio);
+      font-size: 1.2rem;
+      animation: bounce 2s ease-in-out infinite;
+      text-decoration: none;
+      opacity: 0.6;
+    }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+    /* ── TARJETAS DE SECCIÓN ── */
+    .card-seccion {
+      border: 0.5px solid rgba(200,214,224,0.5);
+      border-radius: 12px;
+      padding: 1.8rem 1.5rem;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(8px);
+      box-shadow:
+        0 4px 20px rgba(244,167,195,0.1),
+        0 1px 3px rgba(200,214,224,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    /* ── RECEPCIÓN ── */
+    .hora-evento {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #5a7a8a, #8aafc0, #5a7a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0.5rem 0;
+    }
+    .lugar-nombre {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      color: var(--texto);
+      letter-spacing: 2px;
+      margin: 0.5rem 0 0.3rem;
+    }
+    .lugar-dir {
+      font-size: 0.9rem;
+      color: var(--texto-suave);
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .btn-ubicacion {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.5rem 1.8rem;
+      border: 0.5px solid var(--plata);
+      border-radius: 30px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      background: linear-gradient(135deg, rgba(200,214,224,0.15), rgba(244,167,195,0.1));
+      background: linear-gradient(135deg, #5a7a8a, #8aafc0, #5a7a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: all 0.25s;
+      position: relative;
+    }
+    .btn-ubicacion::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 30px;
+      border: 0.5px solid rgba(200,214,224,0.6);
+      transition: background 0.25s;
+    }
+    .btn-ubicacion:hover::after { background: rgba(200,214,224,0.15); }
+
+    /* ── DRESSCODE ── */
+    .dresscode-box {
+      border: 0.5px solid rgba(200,214,224,0.4);
+      border-radius: 12px;
+      padding: 1.5rem;
+      max-width: 300px;
+      margin: 1rem auto 0;
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(6px);
+    }
+    .dresscode-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      font-size: 1.5rem;
+      opacity: 0.7;
+    }
+
+    /* ── CUENTA REGRESIVA ── */
     .countdown {
       display: flex;
-      gap: 1.5rem;
+      gap: 8px;
       justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 1.5rem;
+      margin: 1rem auto 0;
+      max-width: 340px;
     }
-    .countdown-bloque {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgba(255,255,255,0.6);
-      border: 0.5px solid #f48fb1;
-      border-radius: 12px;
-      padding: 0.8rem 1.2rem;
-      min-width: 70px;
+    .cd-bloque {
+      flex: 1;
+      padding: 1rem 0.5rem;
+      border-radius: 10px;
+      border: 0.5px solid rgba(200,214,224,0.5);
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 2px 12px rgba(244,167,195,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
     }
-    .countdown-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      color: #880e4f;
-      font-weight: 700;
+    .cd-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      display: block;
       line-height: 1;
+      background: linear-gradient(160deg, var(--rosa-oscuro), var(--rosa), var(--rosa-oscuro));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .countdown-label {
-      font-size: 0.65rem;
+    .cd-lbl {
+      font-size: 0.48rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #c2185b;
+      display: block;
       margin-top: 4px;
+      background: linear-gradient(90deg, #5a7a8a, #8aafc0, #5a7a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    /* flecha para bajar */
-    .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
+    /* ── DOS RECUADROS ── */
+    .dos-recuadros {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .recuadro-regalo {
+      border: 0.5px solid rgba(200,214,224,0.45);
+      border-radius: 12px;
+      padding: 1.3rem 0.9rem;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 2px 12px rgba(244,167,195,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+      text-align: center;
+    }
+    .recuadro-icono {
       font-size: 1.5rem;
-      color: #f48fb1;
-      animation: bounce 1.5s ease-in-out infinite;
-      cursor: pointer;
-      z-index: 1;
+      opacity: 0.7;
+      display: block;
+      margin-bottom: 0.6rem;
     }
-    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
-
-
-    /* ═══════════════════════════════════════════════
-       SECCIÓN 2 — ITINERARIO
-    ═══════════════════════════════════════════════ */
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      max-width: 480px;
-      width: 100%;
+    .recuadro-titulo {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #5a7a8a, #8aafc0, #5a7a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.7rem;
+      display: block;
+    }
+    .recuadro-texto {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.88rem;
+      color: var(--texto-suave);
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .transferencia-row {
+      padding: 0.35rem 0;
+      border-bottom: 0.5px solid rgba(200,214,224,0.2);
       text-align: left;
     }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 80px 1px 1fr; /* hora | línea | texto */
-      gap: 0 1rem;
-      align-items: stretch;
+    .transferencia-row:last-child { border-bottom: none; }
+    .tr-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.48rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #5a7a8a, #7a9aaa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
     }
-
-    .timeline-hora {
-      text-align: right;
-      padding: 1rem 0;
-      font-size: 0.85rem;
-      color: #c2185b;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-
-    /* La línea vertical del timeline */
-    .timeline-linea {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .timeline-punto {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: #f48fb1;
-      flex-shrink: 0;
-      margin-top: 1.2rem;
-    }
-    .timeline-trazo {
-      flex: 1;
-      width: 1px;
-      background: #f8bbd0;
-    }
-    /* Oculta el trazo del último item */
-    .timeline-item:last-child .timeline-trazo { display: none; }
-
-    .timeline-texto {
-      padding: 1rem 0 1.5rem;
-    }
-    .timeline-evento {
-      font-weight: 600;
-      font-size: 1.05rem;
-      color: #880e4f;
-    }
-    .timeline-detalle {
-      font-size: 0.9rem;
-      color: #ad1457;
+    .tr-valor {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.88rem;
+      color: var(--texto-suave);
       font-style: italic;
-      margin-top: 2px;
     }
 
-
-    /* ═══════════════════════════════════════════════
-       SECCIÓN 3 — MAPA
-    ═══════════════════════════════════════════════ */
-    .mapa-contenedor {
-      width: 100%;
-      max-width: 600px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 2px solid #f48fb1;
-      box-shadow: 0 8px 30px rgba(244,143,177,0.25);
-    }
-
-    /* El iframe es el mapa de Google Maps embebido */
-    .mapa-contenedor iframe {
-      width: 100%;
-      height: 320px;
-      border: none;
+    /* ── NOMBRES PADRES/PADRINOS ── */
+    .nombre-plata {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 5vw, 1.7rem);
+      font-style: italic;
+      font-weight: 700;
+      background: linear-gradient(135deg, #7a9aaa 0%, #c8dce8 35%, #ffffff 50%, #c8dce8 65%, #7a9aaa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 1px 3px rgba(180,210,224,0.5));
+      line-height: 1.6;
       display: block;
     }
 
-    .mapa-info {
-      background: white;
-      padding: 1rem 1.5rem;
-      text-align: left;
-      border-top: 0.5px solid #f8bbd0;
+    /* ── BOTÓN DE MÚSICA ── */
+    .music-wrap {
+      margin-top: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .mapa-nombre { font-weight: 600; font-size: 1rem; color: #880e4f; }
-    .mapa-dir    { font-size: 0.9rem; color: #ad1457; margin-top: 2px; }
-
-    .btn-maps {
-      display: inline-block;
-      margin-top: 0.8rem;
-      padding: 0.5rem 1.4rem;
-      border: 1.5px solid #c2185b;
-      border-radius: 30px;
-      color: #c2185b;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
+    .music-btn {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 0.5px solid rgba(200,214,224,0.6);
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 16px rgba(244,167,195,0.2), inset 0 1px 0 rgba(255,255,255,0.8);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-maps:hover { background: #c2185b; color: white; }
-
-
-    /* ═══════════════════════════════════════════════
-       SECCIÓN 4 — RSVP (Confirmación de asistencia)
-    ═══════════════════════════════════════════════ */
-    .rsvp-form {
-      background: white;
-      border: 0.5px solid #f8bbd0;
-      border-radius: 16px;
-      padding: 2rem;
-      max-width: 420px;
-      width: 100%;
-      text-align: left;
+    .music-btn:hover { transform: scale(1.08); box-shadow: 0 6px 22px rgba(244,167,195,0.35); }
+    .music-btn.playing { animation: pulse-ring 1.5s ease-in-out infinite; }
+    @keyframes pulse-ring {
+      0%,100% { box-shadow: 0 0 0 0 rgba(244,143,177,0.4), 0 4px 16px rgba(244,167,195,0.2); }
+      50%      { box-shadow: 0 0 0 10px rgba(244,143,177,0), 0 4px 16px rgba(244,167,195,0.2); }
+    }
+    .music-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.52rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #7a9aaa;
     }
 
-    /* Grupos de campo */
-    .campo-grupo {
-      margin-bottom: 1.2rem;
-    }
+    /* ── RSVP ── */
+    .rsvp-form { max-width: 360px; margin: 0 auto; text-align: left; }
+    .campo-grupo { margin-bottom: 1rem; }
     .campo-grupo label {
       display: block;
-      font-size: 0.75rem;
-      letter-spacing: 2px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      color: #c2185b;
+      background: linear-gradient(135deg, #708691, #8aafc0, #67818f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin-bottom: 0.4rem;
     }
-
-    /* Estilos de inputs y select */
     .campo-grupo input,
     .campo-grupo select {
       width: 100%;
-      padding: 0.6rem 0.8rem;
-      border: 1px solid #f8bbd0;
+      padding: 0.65rem 0.9rem;
+      border: 0.5px solid rgba(200,214,224,0.5);
       border-radius: 8px;
       font-family: 'Cormorant Garamond', serif;
       font-size: 1rem;
-      color: #880e4f;
-      background: #fff5f8;
+      color: var(--texto);
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(4px);
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
     .campo-grupo input:focus,
     .campo-grupo select:focus {
-      border-color: #f48fb1;
+      border-color: var(--rosa-medio);
+      box-shadow: 0 0 0 3px rgba(244,143,177,0.12);
     }
 
-    /* Botón de enviar */
-    .btn-enviar {
+    .opciones-acompañante { display: flex; gap: 10px; margin-top: 0.2rem; }
+    .opcion-btn {
+      flex: 1;
+      padding: 0.65rem;
+      background: rgba(255,255,255,0.6);
+      border: 0.5px solid rgba(200,214,224,0.5);
+      border-radius: 8px;
+      color: var(--texto-suave);
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .opcion-btn.activo {
+      background: linear-gradient(135deg, var(--rosa-medio), var(--rosa-oscuro));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(214,63,122,0.3);
+    }
+
+    .btn-confirmar {
       width: 100%;
-      padding: 0.8rem;
-      background: #c2185b;
-      color: white;
+      padding: 0.85rem;
+      background: linear-gradient(135deg, var(--rosa-medio), var(--rosa-oscuro));
       border: none;
       border-radius: 30px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      letter-spacing: 2px;
+      color: #fff;
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      margin-top: 0.5rem;
+      transition: all 0.25s;
+      margin-top: 0.8rem;
+      box-shadow: 0 4px 18px rgba(214,63,122,0.3);
     }
-    .btn-enviar:hover  { background: #880e4f; }
-    .btn-enviar:active { transform: scale(0.98); }
-
-    /* Mensaje de confirmación (oculto por defecto) */
+    .btn-confirmar:hover {
+      box-shadow: 0 6px 24px rgba(214,63,122,0.45);
+      transform: translateY(-1px);
+    }
     .rsvp-gracias {
-      display: none;           /* se muestra con JS al enviar */
+      display: none;
       text-align: center;
       padding: 2rem;
-      font-size: 1.2rem;
-      color: #880e4f;
       font-style: italic;
-    }
-    .rsvp-gracias .check { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
-
-
-    /* ═══════════════════════════════════════════════
-       ANIMACIÓN AL HACER SCROLL
-       Las secciones empiezan invisibles (opacity:0)
-       y aparecen cuando el usuario llega a ellas
-    ═══════════════════════════════════════════════ */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
+      color: var(--texto-suave);
+      font-size: 1.1rem;
+      line-height: 1.8;
     }
 
+    /* ── FOTO ── */
+    .foto-btn {
+      display: inline-block;
+      padding: 0.6rem 2rem;
+      border: 0.5px solid rgba(200,214,224,0.55);
+      border-radius: 30px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #5a7a8a, #8aafc0, #5a7a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .foto-btn:hover { background: rgba(200,214,224,0.1); }
 
-    /* ═══════════════════════════════════════════════
-       PIE DE PÁGINA
-    ═══════════════════════════════════════════════ */
     footer {
       text-align: center;
-      padding: 2rem;
-      background: #880e4f;
-      color: #f8bbd0;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
+      padding: 2.5rem 1rem;
+      border-top: 0.5px solid rgba(200,214,224,0.25);
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--rosa-medio), var(--plata), var(--rosa-medio));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
+    /* ── NOMBRES ELEGANTES (padres y padrinos) ── */
+    .nombre-elegante {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-style: italic;
+      font-weight: 700;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #89a1ad 0%, #c9d7e0 35%, #a3bec5 50%, #bfd2db 65%, #8aa4b1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 1px 4px rgba(160,190,210,0.5));
+      letter-spacing: 1px;
+    }
+
+    /* ── BOTÓN DE MÚSICA ── */
+    .music-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .music-btn {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 0.5px solid rgba(200,214,224,0.6);
+      background: rgba(255,255,255,0.45);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 16px rgba(244,167,195,0.2), inset 0 1px 0 rgba(255,255,255,0.8);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .music-btn:hover { transform: scale(1.08); box-shadow: 0 6px 22px rgba(244,167,195,0.35); }
+    .music-btn.playing { animation: pulse-ring 1.5s ease-in-out infinite; }
+    @keyframes pulse-ring {
+      0%,100% { box-shadow: 0 0 0 0 rgba(244,143,177,0.4), 0 4px 16px rgba(244,167,195,0.2); }
+      50%      { box-shadow: 0 0 0 10px rgba(244,143,177,0), 0 4px 16px rgba(244,167,195,0.2); }
+    }
+    .music-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.52rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #7a9aaa;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════
-       MENÚ DE NAVEGACIÓN
-       Los href="#id" hacen scroll a cada sección
-  ═══════════════════════════════════════════ -->
-  <nav>
-    <a href="#portada">Inicio</a>
-    <a href="#itinerario">Itinerario</a>
-    <a href="#mapa">Lugar</a>
-    <a href="#rsvp">Confirmar</a>
-  </nav>
+  <!-- Partículas estilo disco -->
+  <div class="disco-particles" id="particles"></div>
 
+<div class="page">
 
-  <!-- ═══════════════════════════════════════════
-       SECCIÓN 1 — PORTADA
-  ═══════════════════════════════════════════ -->
+  <!-- ══ PORTADA ══ -->
   <section id="portada">
-    <div class="portada-contenido">
-      <div class="crown">👑</div>
+    <span class="mis-xv-label">Mis XV Años</span>
+    <div class="nombre-xv">Nathaly</div>
+    <div class="ornament-line" style="margin-top:1.2rem"><span>✦</span></div>
+    <p class="fecha-portada">19 · Julio · 2026</p>
+    <!-- BOTÓN DE MÚSICA -->
+    <div class="music-wrap" style="margin-top:1.8rem">
+      <button class="music-btn" id="musicBtn" onclick="toggleMusic()">▶</button>
+      <span class="music-label">Reproducir música</span>
+    </div>
+    <a class="scroll-hint" href="#padres">↓</a>
+  </section>
 
-      <p class="section-label">Con todo el amor de nuestra familia</p>
+  <!-- ══ PADRES ══ -->
+  <section id="padres" class="fade-in">
+    <span class="label-small">Junto con mis</span>
+    <div class="titulo-seccion">Padres</div>
+    <div class="ornament-line"><span>✦</span></div>
+    <p class="nombre-elegante">Paholina Miramontes</p>
+    <p class="nombre-elegante">Enrique Corvera</p>
+  </section>
 
-      <!-- CAMBIA "Valentina" por el nombre real -->
-      <h1 class="nombre-portada">Valentina</h1>
-      <p class="subtitulo-portada">celebra sus XV años</p>
+  <!-- ══ PADRINOS ══ -->
+  <section id="padrinos" class="fade-in">
+    <span class="label-small">Y mis</span>
+    <div class="titulo-seccion">Padrinos</div>
+    <div class="ornament-line"><span>✦</span></div>
+    <p class="nombre-elegante">Verónica Nájera</p>
+    <p class="nombre-elegante">Hugo Medina</p>
+  </section>
 
-      <!-- CUENTA REGRESIVA
-           JavaScript calcula los días/horas/min/seg
-           que faltan para la fecha del evento        -->
-      <div class="countdown">
-        <div class="countdown-bloque">
-          <span class="countdown-num" id="cd-dias">--</span>
-          <span class="countdown-label">Días</span>
-        </div>
-        <div class="countdown-bloque">
-          <span class="countdown-num" id="cd-horas">--</span>
-          <span class="countdown-label">Horas</span>
-        </div>
-        <div class="countdown-bloque">
-          <span class="countdown-num" id="cd-min">--</span>
-          <span class="countdown-label">Min</span>
-        </div>
-        <div class="countdown-bloque">
-          <span class="countdown-num" id="cd-seg">--</span>
-          <span class="countdown-label">Seg</span>
-        </div>
+  <!-- ══ RECEPCIÓN ══ -->
+  <section id="recepcion" class="fade-in">
+    <span style="font-size:1.8rem; opacity:0.65; display:block; margin-bottom:1rem">🪩</span>
+    <span class="label-small">Recepción</span>
+    <div class="titulo-seccion">Fiesta</div>
+    <div class="ornament-line"><span>✦</span></div>
+    <div class="card-seccion">
+      <p class="hora-evento">8:00 P.M.</p>
+      <p class="lugar-nombre">Hacienda del Cipres</p>
+      <p class="lugar-dir">Calle Villa de Santa Cruz Tlajomulco de Zúñiga, JAL Mexico<br>por la del lugar real</p>
+      <a class="btn-ubicacion" href="https://www.google.com/maps/search/?api=1&query=Calle+Villa+de+Santa+Cruz+Tlajomulco+de+Zuniga+JAL+Mexico" target="_blank" target="_blank">Ver Ubicación</a>
+    </div>
+  </section>
+
+  <!-- ══ DRESSCODE ══ -->
+  <section class="fade-in">
+    <span class="label-small">Dresscode</span>
+    <div class="titulo-seccion" style="font-size:1.4rem">Semi Formal</div>
+    <div class="dresscode-box">
+      <div class="dresscode-icons">🤵 🤵‍♀️ 🤵</div>
+    </div>
+  </section>
+
+  <!-- ══ CUENTA REGRESIVA ══ -->
+  <section class="fade-in">
+    <span class="label-small">¡Cada vez falta menos!</span>
+    <div class="countdown">
+      <div class="cd-bloque"><span class="cd-num" id="cd-dias">--</span><span class="cd-lbl">Días</span></div>
+      <div class="cd-bloque"><span class="cd-num" id="cd-horas">--</span><span class="cd-lbl">Horas</span></div>
+      <div class="cd-bloque"><span class="cd-num" id="cd-min">--</span><span class="cd-lbl">Min</span></div>
+      <div class="cd-bloque"><span class="cd-num" id="cd-seg">--</span><span class="cd-lbl">Seg</span></div>
+    </div>
+  </section>
+
+  <!-- ══ REGALOS / TRANSFERENCIAS ══ -->
+  <section class="fade-in">
+    <span class="label-small">Si deseas hacerme un detalle</span>
+    <div class="titulo-seccion">Regalos</div>
+    <div class="ornament-line"><span>✦</span></div>
+    <p style="font-size:0.9rem; color:var(--texto-suave); font-style:italic; margin-bottom:1.2rem">
+      Tu presencia es mi verdadero regalo,<br>pero si deseas hacerme un detalle:
+    </p>
+    <div class="dos-recuadros">
+      <div class="recuadro-regalo">
+        <span class="recuadro-icono">✉️</span>
+        <span class="recuadro-titulo">Lluvia de sobres</span>
+        <p class="recuadro-texto">Tendremos lluvia de sobres en el evento</p>
       </div>
-    </div>
-
-    <!-- flecha para indicar que hay más abajo -->
-    <a class="scroll-hint" href="#itinerario">↓</a>
-  </section>
-
-
-  <!-- ═══════════════════════════════════════════
-       SECCIÓN 2 — ITINERARIO
-       Agrega o quita .timeline-item según necesites
-  ═══════════════════════════════════════════ -->
-  <section id="itinerario">
-    <div class="fade-in">
-      <p class="section-label">El gran día</p>
-      <h2>Itinerario</h2>
-      <div class="divider"></div>
-
-      <div class="timeline">
-
-        <div class="timeline-item">
-          <div class="timeline-hora">5:00 PM</div>
-          <div class="timeline-linea">
-            <div class="timeline-punto"></div>
-            <div class="timeline-trazo"></div>
-          </div>
-          <div class="timeline-texto">
-            <div class="timeline-evento">Recepción de invitados</div>
-            <div class="timeline-detalle">Bienvenida y cóctel</div>
-          </div>
+      <div class="recuadro-regalo">
+        <span class="recuadro-icono">💳</span>
+        <span class="recuadro-titulo">Transferencia</span>
+        <div class="transferencia-row">
+          <span class="tr-label">Banco</span>
+          <span class="tr-valor">-</span>
         </div>
-
-        <div class="timeline-item">
-          <div class="timeline-hora">6:00 PM</div>
-          <div class="timeline-linea">
-            <div class="timeline-punto"></div>
-            <div class="timeline-trazo"></div>
-          </div>
-          <div class="timeline-texto">
-            <div class="timeline-evento">Misa de acción de gracias</div>
-            <div class="timeline-detalle">Parroquia San Francisco</div>
-          </div>
+        <div class="transferencia-row">
+          <span class="tr-label">CLABE</span>
+          <span class="tr-valor">-</span>
         </div>
-
-        <div class="timeline-item">
-          <div class="timeline-hora">8:00 PM</div>
-          <div class="timeline-linea">
-            <div class="timeline-punto"></div>
-            <div class="timeline-trazo"></div>
-          </div>
-          <div class="timeline-texto">
-            <div class="timeline-evento">Vals y presentación</div>
-            <div class="timeline-detalle">Salón Quinta Las Rosas</div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-hora">9:00 PM</div>
-          <div class="timeline-linea">
-            <div class="timeline-punto"></div>
-            <div class="timeline-trazo"></div>
-          </div>
-          <div class="timeline-texto">
-            <div class="timeline-evento">Cena y baile</div>
-            <div class="timeline-detalle">¡A celebrar!</div>
-          </div>
-        </div>
-
-      </div><!-- fin .timeline -->
-    </div>
-  </section>
-
-
-  <!-- ═══════════════════════════════════════════
-       SECCIÓN 3 — MAPA
-       Para obtener el iframe de Google Maps:
-       1. Abre maps.google.com
-       2. Busca el lugar
-       3. Clic en "Compartir" → "Insertar mapa"
-       4. Copia el <iframe> y pégalo aquí abajo
-  ═══════════════════════════════════════════ -->
-  <section id="mapa">
-    <div class="fade-in">
-      <p class="section-label">¿Cómo llegar?</p>
-      <h2>El Lugar</h2>
-      <div class="divider"></div>
-
-      <div class="mapa-contenedor">
-
-        <!-- REEMPLAZA este iframe con el de tu lugar real -->
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3732.0!2d-103.39!3d20.72!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDQzJzEyLjAiTiAxMDPCsDIzJzI0LjAiVw!5e0!3m2!1ses!2smx!4v1"
-          allowfullscreen="" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-
-        <div class="mapa-info">
-          <!-- CAMBIA estos datos por los reales -->
-          <div class="mapa-nombre">Salón Quinta Las Rosas</div>
-          <div class="mapa-dir">Av. Patria 1234, Zapopan, Jalisco</div>
-
-          <!-- Este enlace abre Google Maps con la dirección -->
-          <a class="btn-maps"
-             href="https://maps.google.com/?q=Salon+Quinta+Las+Rosas+Zapopan"
-             target="_blank">
-            Abrir en Google Maps →
-          </a>
+        <div class="transferencia-row">
+          <span class="tr-label">Titular</span>
+          <span class="tr-valor">Nathaly</span>
         </div>
       </div>
     </div>
   </section>
 
-
-  <!-- ═══════════════════════════════════════════
-       SECCIÓN 4 — RSVP
-       Al hacer clic en "Confirmar", JavaScript
-       oculta el formulario y muestra el mensaje
-       de agradecimiento.
-       Para guardar los datos de verdad necesitas
-       un backend (Firebase, Formspree, etc.)
-  ═══════════════════════════════════════════ -->
-  <section id="rsvp">
-    <div class="fade-in">
-      <p class="section-label">¡Te esperamos!</p>
-      <h2>Confirma tu asistencia</h2>
-      <div class="divider"></div>
-
-      <div class="rsvp-form">
-
-        <!-- Formulario visible -->
-        <div id="form-contenido">
-
-          <div class="campo-grupo">
-            <label for="nombre">Tu nombre completo</label>
-            <input type="text" id="nombre" placeholder="Ej. Ana García" />
-          </div>
-
-          <div class="campo-grupo">
-            <label for="telefono">WhatsApp (opcional)</label>
-            <input type="tel" id="telefono" placeholder="33 1234 5678" />
-          </div>
-
-          <div class="campo-grupo">
-            <label for="personas">¿Cuántas personas asistirán?</label>
-            <select id="personas">
-              <option value="1">1 persona</option>
-              <option value="2">2 personas</option>
-              <option value="3">3 personas</option>
-              <option value="4">4 personas</option>
-            </select>
-          </div>
-
-          <div class="campo-grupo">
-            <label for="asiste">¿Podrás asistir?</label>
-            <select id="asiste">
-              <option value="si">Sí, ahí estaré 🎉</option>
-              <option value="no">Lo siento, no podré ir</option>
-            </select>
-          </div>
-
-          <button class="btn-enviar" onclick="enviarRSVP()">
-            Confirmar asistencia
-          </button>
-
-        </div><!-- fin #form-contenido -->
-
-        <!-- Mensaje de gracias (oculto hasta confirmar) -->
-        <div class="rsvp-gracias" id="rsvp-gracias">
-          <span class="check">🌸</span>
-          ¡Gracias por confirmar!<br>
-          <span style="font-size:1rem; color:#c2185b;">Te esperamos con mucho cariño.</span>
+  <!-- ══ CONFIRMAR ASISTENCIA ══ -->
+  <section id="rsvp" class="fade-in">
+    <span class="label-small">Favor de confirmar</span>
+    <div class="titulo-seccion">Asistencia</div>
+    <div class="ornament-line"><span>✦</span></div>
+    <div class="rsvp-form">
+      <div id="form-contenido">
+        <div class="campo-grupo">
+          <label>Tu nombre completo</label>
+          <input type="text" id="nombre" placeholder="Nombre Apellido" />
         </div>
-
-      </div><!-- fin .rsvp-form -->
+        <div class="campo-grupo">
+          <label>¿Llevas acompañante?</label>
+          <div class="opciones-acompañante">
+            <button type="button" class="opcion-btn" id="btn-si" onclick="toggleAcompañante(true)">Sí</button>
+            <button type="button" class="opcion-btn" id="btn-no" onclick="toggleAcompañante(false)">No</button>
+          </div>
+        </div>
+        <div class="campo-grupo" id="campo-acompañante" style="display:none">
+          <label>Nombre del acompañante</label>
+          <input type="text" id="acompañante" placeholder="Nombre de tu acompañante" />
+        </div>
+        <button class="btn-confirmar" onclick="enviarRSVP()">Confirmar asistencia</button>
+      </div>
+      <div class="rsvp-gracias" id="rsvp-gracias">
+        🌸<br><br>¡Gracias por confirmar!<br>
+        <span style="font-size:0.9rem">Te esperamos con mucho cariño.</span>
+      </div>
     </div>
   </section>
 
+  <!-- ══ SUBIR FOTO ══ -->
+  <section class="fade-in">
+    <span class="label-small">Comparte tu momento favorito</span>
+    <div class="ornament-line"><span>✦</span></div>
+    <span class="foto-btn">Subir foto</span>
+  </section>
 
-  <!-- ═══════════════════════════════════════════
-       PIE DE PÁGINA
-  ═══════════════════════════════════════════ -->
-  <footer>
-    🌸 &nbsp; Valentina · XV Años · 2025 &nbsp; 🌸
-  </footer>
+</div>
 
+<footer>Nathaly &nbsp;·&nbsp; XV Años &nbsp;·&nbsp; 19 · VII · 2026</footer>
 
-  <!-- ═══════════════════════════════════════════
-       JAVASCRIPT
-       Tres funciones:
-       1. contarRegresiva() — actualiza el contador
-       2. animarAlScroll()  — fade-in de secciones
-       3. enviarRSVP()      — maneja el formulario
-  ═══════════════════════════════════════════ -->
-  <script>
+<script>
+  /* ── PARTÍCULAS DISCO ── */
+  const container = document.getElementById('particles');
+  const colors = ['#f4a7c3','#e8f0f5','#d63f7a','#c8d6e0','#ffffff','#f48fb1'];
+  for (let i = 0; i < 35; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 5 + 2;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*12+8}s;
+      animation-delay:${Math.random()*8}s;
+      box-shadow: 0 0 ${size*2}px ${colors[Math.floor(Math.random()*colors.length)]};
+    `;
+    container.appendChild(p);
+  }
 
-    /* ── 1. CUENTA REGRESIVA ──────────────────────
-       Cambia la fecha por la del evento real.
-       Formato: año, mes-1 (enero=0), día, hora, min */
-    const FECHA_EVENTO = new Date(2025, 5, 14, 18, 0); // 14 jun 2025, 6pm
+  /* ── MÚSICA ──
+     Para usar tu canción:
+     1. Sube el MP3 al repositorio junto al index.html
+     2. Cambia 'tu-cancion.mp3' por el nombre real del archivo */
+  const audio = new Audio('ghostin.mp3');
+  audio.loop = true;
+  let playing = false;
 
-    function contarRegresiva() {
-      const ahora     = new Date();
-      const diferencia = FECHA_EVENTO - ahora; // milisegundos que faltan
-
-      if (diferencia <= 0) {
-        // Si ya pasó la fecha, muestra ceros
-        ['cd-dias','cd-horas','cd-min','cd-seg'].forEach(id => {
-          document.getElementById(id).textContent = '00';
-        });
-        return;
-      }
-
-      // Convierte milisegundos a días, horas, minutos, segundos
-      const dias  = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const min   = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-      const seg   = Math.floor((diferencia % (1000 * 60)) / 1000);
-
-      // Actualiza el HTML — padStart(2,'0') pone el cero: 5 → "05"
-      document.getElementById('cd-dias').textContent  = String(dias).padStart(2,'0');
-      document.getElementById('cd-horas').textContent = String(horas).padStart(2,'0');
-      document.getElementById('cd-min').textContent   = String(min).padStart(2,'0');
-      document.getElementById('cd-seg').textContent   = String(seg).padStart(2,'0');
+  function toggleMusic() {
+    const btn = document.getElementById('musicBtn');
+    const lbl = btn.parentElement.querySelector('.music-label');
+    if (!playing) {
+      audio.play().then(() => {
+        playing = true;
+        btn.textContent = '⏸';
+        btn.classList.add('playing');
+        lbl.textContent = 'Pausar música';
+      }).catch()
+    } else {
+      audio.pause();
+      playing = false;
+      btn.textContent = '▶';
+      btn.classList.remove('playing');
+      lbl.textContent = 'Reproducir música';
     }
+  }
 
-    contarRegresiva();                    // corre inmediatamente
-    setInterval(contarRegresiva, 1000);   // y luego cada segundo
-
-
-    /* ── 2. ANIMACIÓN AL HACER SCROLL ────────────
-       IntersectionObserver "vigila" los elementos
-       con clase .fade-in y añade .visible cuando
-       el usuario los ve en pantalla               */
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {         // si está visible
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.15 }); // activa cuando el 15% del elemento es visible
-
-    // Aplica el observer a todos los .fade-in
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-
-    /* ── 3. FORMULARIO RSVP ──────────────────────
-       Por ahora solo muestra un mensaje.
-       Para guardar datos de verdad conecta
-       Formspree, Firebase, o un servidor propio.  */
-    function enviarRSVP() {
-      const nombre = document.getElementById('nombre').value.trim();
-
-      if (!nombre) {
-        alert('Por favor escribe tu nombre');
-        return;
-      }
-
-      // Aquí podrías hacer un fetch() a tu servidor:
-      // fetch('https://tu-api.com/rsvp', { method:'POST', body: JSON.stringify({nombre}) })
-
-      // Por ahora solo muestra el mensaje de gracias
-      document.getElementById('form-contenido').style.display = 'none';
-      document.getElementById('rsvp-gracias').style.display   = 'block';
+  /* ── CUENTA REGRESIVA ── */
+  const FECHA = new Date(2026, 6, 19, 20, 0);
+  function tick() {
+    const diff = FECHA - new Date();
+    if (diff <= 0) {
+      ['cd-dias','cd-horas','cd-min','cd-seg'].forEach(id => document.getElementById(id).textContent = '00');
+      return;
     }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-dias').textContent  = String(d).padStart(2,'0');
+    document.getElementById('cd-horas').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-min').textContent   = String(m).padStart(2,'0');
+    document.getElementById('cd-seg').textContent   = String(s).padStart(2,'0');
+  }
+  tick(); setInterval(tick, 1000);
 
-  </script>
+  /* ── FADE IN ── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 
+  /* ── RSVP ── */
+  let llevaAcompañante = null;
+  function toggleAcompañante(valor) {
+    llevaAcompañante = valor;
+    document.getElementById('btn-si').classList.toggle('activo', valor === true);
+    document.getElementById('btn-no').classList.toggle('activo', valor === false);
+    const campo = document.getElementById('campo-acompañante');
+    campo.style.display = valor ? 'block' : 'none';
+    if (!valor) document.getElementById('acompañante').value = '';
+  }
+  function enviarRSVP() {
+    if (!document.getElementById('nombre').value.trim()) { alert('Por favor escribe tu nombre'); return; }
+    if (llevaAcompañante === null) { alert('Indica si llevas acompañante'); return; }
+    if (llevaAcompañante && !document.getElementById('acompañante').value.trim()) {
+      alert('Por favor escribe el nombre de tu acompañante'); return;
+    }
+    document.getElementById('form-contenido').style.display = 'none';
+    document.getElementById('rsvp-gracias').style.display = 'block';
+  }
+</script>
 </body>
 </html>
