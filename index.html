@@ -33,6 +33,7 @@
       color: var(--texto);
       background: #fdf0f6;
       overflow-x: hidden;
+      position: relative;
     }
 
     /* ── FONDO ANIMADO CON DESTELLOS ── */
@@ -817,7 +818,7 @@
 
   <!-- ══ RECEPCIÓN ══ -->
   <section id="recepcion" class="fade-in">
-    <img src="6.png" alt="bola disco" style="width:60px; height:60px; object-fit:contain; display:block; margin:0 auto 1rem;" />
+    <img src="6.png" alt="bola disco" style="width:160px; height:200px; object-fit:contain; display:block; margin:0 auto 1rem;" />
     <span class="label-small">Recepción</span>
     <div class="titulo-seccion">Fiesta</div>
     <div class="ornament-line"><span>✦</span></div>
@@ -984,7 +985,7 @@
 <footer>Nathaly &nbsp;·&nbsp; XV Años &nbsp;·&nbsp; 19 · VII · 2026</footer>
 
 <script>
-  /* ── PARTÍCULAS DISCO ── */
+  /* ── PARTÍCULAS ORIGINALES ── */
   const container = document.getElementById('particles');
   const colors = ['#f4a7c3','#e8f0f5','#d63f7a','#c8d6e0','#ffffff','#f48fb1'];
   for (let i = 0; i < 35; i++) {
@@ -1002,6 +1003,82 @@
     `;
     container.appendChild(p);
   }
+
+  /* ── BOLAS DISCO DECORATIVAS ── */
+  // [left%, top%, tamaño px, opacidad]
+  // Negativo o >100 = parcialmente fuera de pantalla (efecto recortado)
+  const bolasConfig = [
+    // ── Esquina superior izquierda (cúmulo) ──
+    [-18, -1,  90, 0.9],
+    [-5,  2,   60, 0.85],
+    [2,   -12, 75, 0.88],
+    [6,   4,   45, 0.8],
+    [-8,  7,   55, 0.82],
+
+    // ── Esquina superior derecha (cúmulo) ──
+    [95,  -10, 85, 0.9],
+    [102, 1,   65, 0.85],
+    [88,  -5,  70, 0.88],
+    [98,  6,   50, 0.82],
+    [92,  8,   42, 0.78],
+
+    // ── Esquina inferior izquierda (cúmulo) ──
+    [-15, 95,  85, 0.9],
+    [-4,  98,  65, 0.85],
+    [3,   102, 70, 0.88],
+    [8,   96,  45, 0.8],
+    [-6,  92,  55, 0.82],
+
+    // ── Esquina inferior derecha (cúmulo) ──
+    [98,  94,  80, 0.9],
+    [104, 98,  60, 0.85],
+    [90,  102, 70, 0.88],
+    [96,  90,  48, 0.82],
+    [102, 88,  55, 0.8],
+
+    // ── Borde izquierdo dispersas ──
+    [-20, 22,  70, 0.88],
+    [-10, 32,  50, 0.82],
+    [-15, 45,  65, 0.85],
+    [-8,  55,  45, 0.8],
+    [-18, 68,  72, 0.87],
+    [-5,  78,  48, 0.82],
+
+    // ── Borde derecho dispersas ──
+    [102, 18,  68, 0.87],
+    [96,  28,  50, 0.82],
+    [104, 40,  75, 0.88],
+    [98,  52,  45, 0.8],
+    [102, 62,  62, 0.85],
+    [95,  75,  48, 0.82],
+
+    // ── Cúmulo medio izquierdo ──
+    [-12, 48,  80, 0.88],
+    [-2,  51,  55, 0.82],
+    [4,   46,  42, 0.78],
+
+    // ── Cúmulo medio derecho ──
+    [100, 47,  78, 0.87],
+    [94,  50,  52, 0.82],
+    [103, 54,  44, 0.78],
+  ];
+
+  bolasConfig.forEach(([left, top, size, opacity]) => {
+    const bola = document.createElement('img');
+    bola.src = '7.png';
+    bola.style.cssText = `
+      position: absolute;
+      left: ${left}%;
+      top: ${top}%;
+      width: ${size}px;
+      height: ${size}px;
+      opacity: ${opacity};
+      pointer-events: none;
+      z-index: 0;
+      filter: drop-shadow(0 2px 6px rgba(244,167,195,0.4));
+    `;
+    document.body.appendChild(bola);
+  });
 
   /* ── MÚSICA ──
      Para usar tu canción:
