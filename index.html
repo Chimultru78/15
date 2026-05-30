@@ -655,7 +655,7 @@
       font-style: italic;
       font-weight: 700;
       line-height: 1.6;
-      background: linear-gradient(135deg, #89a1ad 0%, #c9d7e0 35%, #a3bec5 50%, #bfd2db 65%, #8aa4b1 100%);
+      background: linear-gradient(135deg, #97a8b1 0%, #d1d9df 35%, #b0c2c7 50%, #c9d4da 65%, #94a7b1 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -697,6 +697,75 @@
       color: #7a9aaa;
     }
 
+    /* ── TIMELINE ITINERARIO ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      max-width: 380px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .tl-item {
+      display: grid;
+      grid-template-columns: 72px 20px 1fr;
+      gap: 0 12px;
+      align-items: stretch;
+    }
+    .tl-hora {
+      text-align: right;
+      padding: 1rem 0;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #5a7a8a, #8aafc0, #5a7a8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+    .tl-linea {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .tl-punto {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rosa-medio), var(--rosa-oscuro));
+      box-shadow: 0 0 8px rgba(244,143,177,0.5);
+      flex-shrink: 0;
+      margin-top: 1.1rem;
+    }
+    .tl-trazo {
+      flex: 1;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(244,143,177,0.5), rgba(200,214,224,0.3));
+    }
+    .tl-item:last-child .tl-trazo { display: none; }
+    .tl-texto {
+      padding: 0.9rem 0 1.3rem;
+    }
+    .tl-evento {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      background: linear-gradient(180deg, rgba(255, 133, 239, 0.863), rgba(252, 101, 186, 0.342));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: var(--texto);
+      line-height: 1.2;
+    }
+    .tl-detalle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.88rem;
+      color: var(--texto-suave);
+      font-style: italic;
+      margin-top: 2px;
+    }
+
     .fade-in {
       opacity: 0;
       transform: translateY(24px);
@@ -720,7 +789,9 @@
     <p class="fecha-portada">19 · Julio · 2026</p>
     <!-- BOTÓN DE MÚSICA -->
     <div class="music-wrap" style="margin-top:1.8rem">
-      <button class="music-btn" id="musicBtn" onclick="toggleMusic()">▶</button>
+      <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+        <img id="musicIcon" src="1.png" alt="play" style="width:100%; height:100%; object-fit:contain; border-radius:50%;" />
+      </button>
       <span class="music-label">Reproducir música</span>
     </div>
     <a class="scroll-hint" href="#padres">↓</a>
@@ -746,7 +817,7 @@
 
   <!-- ══ RECEPCIÓN ══ -->
   <section id="recepcion" class="fade-in">
-    <span style="font-size:1.8rem; opacity:0.65; display:block; margin-bottom:1rem">🪩</span>
+    <img src="6.png" alt="bola disco" style="width:60px; height:60px; object-fit:contain; display:block; margin:0 auto 1rem;" />
     <span class="label-small">Recepción</span>
     <div class="titulo-seccion">Fiesta</div>
     <div class="ornament-line"><span>✦</span></div>
@@ -758,12 +829,82 @@
     </div>
   </section>
 
+  <!-- ══ ITINERARIO ══ -->
+  <section class="fade-in">
+    <span class="label-small">El gran día</span>
+    <div class="titulo-seccion">Itinerario</div>
+    <div class="ornament-line"><span>✦</span></div>
+
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-hora">7:30 PM</div>
+        <div class="tl-linea"><div class="tl-punto"></div><div class="tl-trazo"></div></div>
+        <div class="tl-texto">
+          <div class="tl-evento">Recepción</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-hora">8:00 PM</div>
+        <div class="tl-linea"><div class="tl-punto"></div><div class="tl-trazo"></div></div>
+        <div class="tl-texto">
+          <div class="tl-evento">Entrada triunfal</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-hora">8:30 PM</div>
+        <div class="tl-linea"><div class="tl-punto"></div><div class="tl-trazo"></div></div>
+        <div class="tl-texto">
+          <div class="tl-evento">Vals</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-hora">9:00 PM</div>
+        <div class="tl-linea"><div class="tl-punto"></div><div class="tl-trazo"></div></div>
+        <div class="tl-texto">
+          <div class="tl-evento">Cena</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-hora">10:00 PM</div>
+        <div class="tl-linea"><div class="tl-punto"></div><div class="tl-trazo"></div></div>
+        <div class="tl-texto">
+          <div class="tl-evento">Baile sorpresa</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-hora">10:30 PM</div>
+        <div class="tl-linea"><div class="tl-punto"></div><div class="tl-trazo"></div></div>
+        <div class="tl-texto">
+          <div class="tl-evento">Disfruta la "Fiesta"</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-hora">2:00 AM</div>
+        <div class="tl-linea"><div class="tl-punto"></div><div class="tl-trazo"></div></div>
+        <div class="tl-texto">
+          <div class="tl-evento">Fin del festejo</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- ══ DRESSCODE ══ -->
   <section class="fade-in">
     <span class="label-small">Dresscode</span>
     <div class="titulo-seccion" style="font-size:1.4rem">Semi Formal</div>
     <div class="dresscode-box">
-      <div class="dresscode-icons">🤵 🤵‍♀️ 🤵</div>
+      <img src="5.png" alt="dresscode" style="width:80px; height:100px; object-fit:contain; display:block; margin:0 auto;" />
+      <p style="margin-top:0.9rem; font-family:'Cormorant Garamond',serif; font-size:0.95rem; font-style:italic; color:var(--texto-suave);">
+        El color del vestido de la quinceañera<br>será una <strong style="color:var(--rosa);">sorpresa</strong> 
+      </p>
     </div>
   </section>
 
@@ -788,12 +929,12 @@
     </p>
     <div class="dos-recuadros">
       <div class="recuadro-regalo">
-        <span class="recuadro-icono">✉️</span>
+        <img src="3.png" alt="sobre" style="width:60px; height:60px; object-fit:contain; margin-bottom:0.6rem; display:block; margin-left:auto; margin-right:auto;" />
         <span class="recuadro-titulo">Lluvia de sobres</span>
         <p class="recuadro-texto">Tendremos lluvia de sobres en el evento</p>
       </div>
       <div class="recuadro-regalo">
-        <span class="recuadro-icono">💳</span>
+        <img src="4.png" alt="tarjeta" style="width:60px; height:60px; object-fit:contain; margin-bottom:0.6rem; display:block; margin-left:auto; margin-right:auto;" />
         <span class="recuadro-titulo">Transferencia</span>
         <div class="transferencia-row">
           <span class="tr-label">Banco</span>
@@ -821,17 +962,6 @@
         <div class="campo-grupo">
           <label>Tu nombre completo</label>
           <input type="text" id="nombre" placeholder="Nombre Apellido" />
-        </div>
-        <div class="campo-grupo">
-          <label>¿Llevas acompañante?</label>
-          <div class="opciones-acompañante">
-            <button type="button" class="opcion-btn" id="btn-si" onclick="toggleAcompañante(true)">Sí</button>
-            <button type="button" class="opcion-btn" id="btn-no" onclick="toggleAcompañante(false)">No</button>
-          </div>
-        </div>
-        <div class="campo-grupo" id="campo-acompañante" style="display:none">
-          <label>Nombre del acompañante</label>
-          <input type="text" id="acompañante" placeholder="Nombre de tu acompañante" />
         </div>
         <button class="btn-confirmar" onclick="enviarRSVP()">Confirmar asistencia</button>
       </div>
@@ -883,18 +1013,21 @@
 
   function toggleMusic() {
     const btn = document.getElementById('musicBtn');
+    const icon = document.getElementById('musicIcon');
     const lbl = btn.parentElement.querySelector('.music-label');
     if (!playing) {
       audio.play().then(() => {
         playing = true;
-        btn.textContent = '⏸';
+        icon.src = '2.png';
         btn.classList.add('playing');
         lbl.textContent = 'Pausar música';
-      }).catch()
+      }).catch(() => {
+        lbl.textContent = 'Sube el archivo MP3 primero';
+      });
     } else {
       audio.pause();
       playing = false;
-      btn.textContent = '▶';
+      icon.src = '1.png';
       btn.classList.remove('playing');
       lbl.textContent = 'Reproducir música';
     }
@@ -926,20 +1059,10 @@
   document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 
   /* ── RSVP ── */
-  let llevaAcompañante = null;
-  function toggleAcompañante(valor) {
-    llevaAcompañante = valor;
-    document.getElementById('btn-si').classList.toggle('activo', valor === true);
-    document.getElementById('btn-no').classList.toggle('activo', valor === false);
-    const campo = document.getElementById('campo-acompañante');
-    campo.style.display = valor ? 'block' : 'none';
-    if (!valor) document.getElementById('acompañante').value = '';
-  }
   function enviarRSVP() {
-    if (!document.getElementById('nombre').value.trim()) { alert('Por favor escribe tu nombre'); return; }
-    if (llevaAcompañante === null) { alert('Indica si llevas acompañante'); return; }
-    if (llevaAcompañante && !document.getElementById('acompañante').value.trim()) {
-      alert('Por favor escribe el nombre de tu acompañante'); return;
+    if (!document.getElementById('nombre').value.trim()) {
+      alert('Por favor escribe tu nombre');
+      return;
     }
     document.getElementById('form-contenido').style.display = 'none';
     document.getElementById('rsvp-gracias').style.display = 'block';
