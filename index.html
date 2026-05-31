@@ -767,6 +767,19 @@
       margin-top: 2px;
     }
 
+    /* ── EXPLOSIÓN DE PARTÍCULAS ── */
+    .particula-explosion {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: explotar 1.8s ease-out forwards;
+    }
+    @keyframes explotar {
+      0%   { transform: translate(0, 0) scale(1); opacity: 1; }
+      60%  { opacity: 0.8; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+    }
+
     .fade-in {
       opacity: 0;
       transform: translateY(24px);
@@ -967,8 +980,8 @@
         <button class="btn-confirmar" onclick="enviarRSVP()">Confirmar asistencia</button>
       </div>
       <div class="rsvp-gracias" id="rsvp-gracias">
-        🌸<br><br>¡Gracias por confirmar!<br>
-        <span style="font-size:0.9rem">Te esperamos con mucho cariño.</span>
+        <div id="explosion-container" style="position:relative; height:80px; margin-bottom:0.5rem;"></div>
+        ¡Gracias por confirmar!
       </div>
     </div>
   </section>
@@ -1181,13 +1194,48 @@
   document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 
   /* ── RSVP ── */
+  function lanzarExplosion() {
+    const container = document.getElementById('explosion-container');
+    const colores = ['#c8d6e0','#e2ecf2','#9ab8c8','#ffffff','#b0c8d8','#d8e8f0','#a0b8c8','#f0f4f6'];
+    const centro = { x: container.offsetWidth / 2, y: container.offsetHeight / 2 };
+
+    for (let i = 0; i < 36; i++) {
+      const p = document.createElement('div');
+      p.className = 'particula-explosion';
+      const size   = Math.random() * 14 + 5;
+      const angulo = (Math.PI * 2 / 36) * i + (Math.random() * 0.4);
+      const dist   = Math.random() * 90 + 50;
+      const dx     = Math.cos(angulo) * dist;
+      const dy     = Math.sin(angulo) * dist;
+      const color  = colores[Math.floor(Math.random() * colores.length)];
+      const delay  = Math.random() * 0.2;
+
+      p.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        background: ${color};
+        left: ${centro.x}px;
+        top: ${centro.y}px;
+        --dx: ${dx}px;
+        --dy: ${dy}px;
+        animation-delay: ${delay}s;
+        box-shadow: 0 0 ${size}px ${color};
+      `;
+      container.appendChild(p);
+    }
+    setTimeout(() => container.innerHTML = '', 2200);
+  }
+
   function enviarRSVP() {
     if (!document.getElementById('nombre').value.trim()) {
       alert('Por favor escribe tu nombre');
       return;
     }
     document.getElementById('form-contenido').style.display = 'none';
-    document.getElementById('rsvp-gracias').style.display = 'block';
+    const gracias = document.getElementById('rsvp-gracias');
+    gracias.style.display = 'block';
+    // Pequeño delay para que el contenedor sea visible antes de calcular posición
+    setTimeout(lanzarExplosion, 50);
   }
 </script>
 </body>
