@@ -138,7 +138,7 @@
       text-transform: uppercase;
       color: var(--plata-brillo);
       /* Efecto plateado metálico */
-      background: linear-gradient(135deg, #5a7a8a 0%, #8aafc0 40%, #4a6a7a 60%, #7a9aaa 100%);
+      background: linear-gradient(135deg, #465a64 0%, #748f9b 40%, #4a6a7a 60%, #7a9aaa 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -255,7 +255,7 @@
       overflow: visible;
       display: inline-block;
       /* Degradado rosa para el nombre */
-      background: linear-gradient(160deg, #718796 0%, #9dabb3 25%, #bfcecf 45%, #e1e8ec 55%, #9bbcce 75%, #62727e 100%);
+      background: linear-gradient(160deg, #60707a 0%, #849096 25%, #9da7a7 45%, #ccd1d4 55%, #7993a0 75%, #4c5963 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -752,7 +752,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.05rem;
       font-weight: 600;
-      background: linear-gradient(180deg, rgba(255, 133, 239, 0.863), rgba(252, 101, 186, 0.342));
+      background: linear-gradient(180deg, rgba(255, 157, 242, 0.863), rgba(255, 132, 202, 0.342));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -1098,23 +1098,18 @@
   bolasConfig.forEach(([left, top, size, opacity]) => {
     const bola = document.createElement('img');
     bola.src = '7.png';
-    bola.style.cssText = `
-      position: absolute;
-      left: ${left}%;
-      top: ${top}%;
-      width: ${size}px;
-      height: ${size}px;
-      opacity: ${opacity};
-      pointer-events: none;
-      z-index: 0;
-      filter: drop-shadow(0 2px 8px rgba(244,167,195,0.45));
-    `;
-    document.body.appendChild(bola);
-  });
 
-  bolasConfig.forEach(([left, top, size, opacity]) => {
-    const bola = document.createElement('img');
-    bola.src = '7.png';
+    // Rotación orientada al centro: izquierda rota positivo, derecha negativo
+    // Entre 0 y 45 grados máximo, proporcional a qué tan lejos del centro
+    const esDerecha = left > 50;
+    const distancia = esDerecha ? (left - 50) / 60 : (50 - left) / 60;
+    const rotBase   = Math.min(distancia * 45, 45);
+    // Pequeña variación aleatoria para que no sean todas iguales
+    const variacion = (Math.random() * 14) - 7;
+    const rot       = esDerecha
+      ? -(rotBase + variacion)   // derecha: inclina hacia la izquierda (centro)
+      :  (rotBase + variacion);  // izquierda: inclina hacia la derecha (centro)
+
     bola.style.cssText = `
       position: absolute;
       left: ${left}%;
@@ -1124,7 +1119,8 @@
       opacity: ${opacity};
       pointer-events: none;
       z-index: 0;
-      filter: drop-shadow(0 2px 6px rgba(244,167,195,0.4));
+      transform: rotate(${rot}deg);
+      filter: drop-shadow(0 2px 8px rgba(244,167,195,0.45));
     `;
     document.body.appendChild(bola);
   });
