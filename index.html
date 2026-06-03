@@ -487,7 +487,7 @@
       font-size: clamp(1.3rem, 5vw, 1.7rem);
       font-style: italic;
       font-weight: 700;
-      background: linear-gradient(135deg, #7a9aaa 0%, #c8dce8 35%, #ffffff 50%, #c8dce8 65%, #7a9aaa 100%);
+      background: linear-gradient(160deg, #60707a 0%, #849096 25%, #9da7a7 45%, #ccd1d4 55%, #7993a0 75%, #4c5963 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -660,7 +660,7 @@
       font-style: italic;
       font-weight: 700;
       line-height: 1.6;
-      background: linear-gradient(135deg, #97a8b1 0%, #d1d9df 35%, #b0c2c7 50%, #c9d4da 65%, #94a7b1 100%);
+      background: linear-gradient(160deg, #60707a 0%, #849096 25%, #9da7a7 45%, #ccd1d4 55%, #7993a0 75%, #4c5963 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -976,13 +976,13 @@
     <div class="titulo-seccion">Asistencia</div>
     <div class="ornament-line"><span>✦</span></div>
     <div class="rsvp-form">
-      <div id="form-contenido">
+      <form id="form-invitacion">
         <div class="campo-grupo">
           <label>Tu nombre completo</label>
-          <input type="text" id="nombre" placeholder="Nombre Apellido" />
+          <input type="text" id="nombre" name="entry.988162300" placeholder="Nombre Apellido" required />
         </div>
-        <button class="btn-confirmar" onclick="enviarRSVP()">Confirmar asistencia</button>
-      </div>
+        <button type="submit" class="btn-confirmar" id="btn-enviar">Confirmar asistencia</button>
+      </form>
       <div class="rsvp-gracias" id="rsvp-gracias">
         <div id="explosion-container" style="position:relative; height:80px; margin-bottom:0.5rem;"></div>
         ¡Gracias por confirmar!
@@ -994,7 +994,9 @@
   <section class="fade-in">
     <span class="label-small">Comparte tu momento favorito</span>
     <div class="ornament-line"><span>✦</span></div>
-    <span class="foto-btn">Subir foto</span>
+    <a class="foto-btn" href="https://photos.app.goo.gl/Dci5RBWcpU9TZGW36" target="_blank">
+  Subir foto
+</a>
   </section>
 
 </div>
@@ -1230,17 +1232,38 @@
     setTimeout(() => container.innerHTML = '', 2200);
   }
 
-  function enviarRSVP() {
+  document.getElementById('form-invitacion').addEventListener('submit', function(e) {
+    e.preventDefault(); 
+    
     if (!document.getElementById('nombre').value.trim()) {
       alert('Por favor escribe tu nombre');
       return;
     }
-    document.getElementById('form-contenido').style.display = 'none';
-    const gracias = document.getElementById('rsvp-gracias');
-    gracias.style.display = 'block';
-    // Pequeño delay para que el contenedor sea visible antes de calcular posición
-    setTimeout(lanzarExplosion, 50);
-  }
+
+    const btn = document.getElementById('btn-enviar');
+    btn.disabled = true;
+    btn.innerText = 'Enviando...';
+
+    const formURL = 'https://docs.google.com/forms/d/e/1FAIpQLSegBxd4v16alAgNYqIu4ZutUq36AjBANSwSUyhGKL1vNFJOmA/formResponse';
+    const formData = new FormData(this);
+
+    fetch(formURL, {
+      method: 'POST',
+      body: formData,
+      mode: 'no-cors'
+    })
+    .then(() => {
+      document.getElementById('form-invitacion').style.display = 'none';
+      const gracias = document.getElementById('rsvp-gracias');
+      gracias.style.display = 'block';
+      setTimeout(lanzarExplosion, 50); // Mantiene tu animación intacta
+    })
+    .catch(error => {
+      alert('Hubo un problema. Inténtalo de nuevo.');
+      btn.disabled = false;
+      btn.innerText = 'Confirmar asistencia';
+    });
+  });
 </script>
 </body>
 </html>
