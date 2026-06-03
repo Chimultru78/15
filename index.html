@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  
   <meta charset="UTF-8" />
+  <meta property="og:image" content="8.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nathaly | Mis XV</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet" />
-
+  <meta charset="UTF-8">
+    <title>Título de mi página</title>
+    <link rel="icon" href="6.png" type="image/png">
   <style>
     @font-face {
    font-family: 'Bickham';
@@ -16,6 +20,7 @@
     html { scroll-behavior: smooth; }
 
     :root {
+      --rosa2:       #ff68c7;
       --rosa:        #f4a7c3;
       --rosa-claro:  #fce8f1;
       --rosa-medio:  #f48fb1;
@@ -623,7 +628,7 @@
     .foto-btn {
       display: inline-block;
       padding: 0.6rem 2rem;
-      border: 0.5px solid rgba(200,214,224,0.55);
+      border: 0.5px solid rgba(169, 181, 189, 0.55);
       border-radius: 30px;
       font-family: 'Cinzel', serif;
       font-size: 0.58rem;
@@ -756,7 +761,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.05rem;
       font-weight: 600;
-      background: linear-gradient(180deg, rgba(255, 157, 242, 0.863), rgba(255, 132, 202, 0.342));
+      background: linear-gradient(180deg, var(--rosa-oscuro));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -815,6 +820,16 @@
     <a class="scroll-hint" href="#padres">↓</a>
   </section>
 
+  <!-- ══ FRASE ══ -->
+  <section class="fade-in" style="padding: 2rem 0 0;">
+    <p style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-style:italic; font-weight:400; color:#f4a7c3; line-height:1.8; max-width:340px; margin:0 auto 1rem; text-align:center;">
+      Los mejores recuerdos se crean con personas especiales.
+    </p>
+    <p style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-style:italic; font-weight:400; color:#f4a7c3; line-height:1.8; max-width:340px; margin:0 auto; text-align:center;">
+      Gracias por estar aquí y celebrar conmigo este día tan mágico
+    </p>
+  </section>
+
   <!-- ══ PADRES ══ -->
   <section id="padres" class="fade-in">
     <span class="label-small">Junto con mis</span>
@@ -843,7 +858,14 @@
       <p class="hora-evento">8:00 P.M.</p>
       <p class="lugar-nombre">Hacienda del Cipres</p>
       <p class="lugar-dir">Calle Villa de Santa Cruz Tlajomulco de Zúñiga, JAL Mexico<br>por la del lugar real</p>
-      <a class="btn-ubicacion" href="https://www.google.com/maps/search/?api=1&query=Calle+Villa+de+Santa+Cruz+Tlajomulco+de+Zuniga+JAL+Mexico" target="_blank" target="_blank">Ver Ubicación</a>
+      <div style="display:flex; flex-direction:column; gap:10px; align-items:center; margin-top:1rem;">
+        <a class="btn-ubicacion" href="https://maps.app.goo.gl/b7GNHwhRYr5VrhS48?g_st=ic" target="_blank">
+          Google Maps
+        </a>
+        <a class="btn-ubicacion" href="https://maps.apple/p/B~ufbeiUK2pH7t" target="_blank">
+          Apple Maps
+        </a>
+      </div>
     </div>
   </section>
 
